@@ -8,7 +8,6 @@ function JobsFeed() {
 
     useEffect(() => {
         getAllUsers().then((result) => {
-            console.log(result)
             setPosts(result)
         })
     }, [])
@@ -20,7 +19,12 @@ function JobsFeed() {
                     <PostCard
                         key={post.ID}
                         title={post.name}
-                        moreText={{ Email: post.email, Age: post.age.low, "Phone Number": post.phone.low, "Open to work": `${post.open_to_work ? "Yes" : "No"}` }}
+                        moreText={{
+                            Email: post.email,
+                            Age: post.age.low,
+                            'Phone Number': post.phone.low,
+                            'Open to work': `${post.open_to_work ? 'Yes' : 'No'}`,
+                        }}
                         arrayData={post.abilities}
                         arrayTitle="Skills"
                     />
