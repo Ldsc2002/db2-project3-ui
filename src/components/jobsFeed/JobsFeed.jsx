@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import Button from '@mui/material/Button'
-import Modal from '@mui/material/Modal'
 import { getAllJobs } from '../db/api'
 import PostCard from '../postCard/PostCard'
 import classes from './JobsFeed.module.css'
@@ -10,7 +8,6 @@ function JobsFeed() {
 
     useEffect(() => {
         getAllJobs().then((result) => {
-            console.log(result)
             setPosts(result)
         })
     }, [])
@@ -20,12 +17,12 @@ function JobsFeed() {
             <div>
                 {posts.map((post, index) => (
                     <PostCard
-                        // eslint-disable-next-line no-underscore-dangle
                         key={post.ID}
-                        title={post.country}
-                        description={post.salary}
+                        title={post.title}
+                        description={`Country: ${post.country}`}
+                        moreText={{ Applicants: post.num_applicants, Salary: post.salary }}
                         arrayData={post.required_habilities}
-                        arrayTitle="Required Skills:"
+                        arrayTitle="Required Skills"
                     />
                 ))}
             </div>

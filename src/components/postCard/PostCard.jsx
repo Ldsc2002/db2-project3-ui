@@ -7,9 +7,10 @@ import Typography from '@mui/material/Typography'
 
 function PostCard(props) {
     const {
-        title, description, arrayTitle, arrayData,
+        title, description, arrayTitle, arrayData, moreText,
     } = props
     const [array, setArray] = useState([])
+    const [more, setMore] = useState([])
 
     useEffect(() => {
         if (arrayData !== undefined) {
@@ -26,27 +27,48 @@ function PostCard(props) {
         }
     }, [arrayData])
 
+    useEffect(() => {
+        if (moreText !== undefined) {
+            let newArray = []
+            Object.keys(moreText).forEach((key) => {
+                newArray.push(`${key}: ${moreText[key]}`)
+            })
+
+            setMore(newArray)
+        }
+    }, [moreText])
+
     return (
         <Card sx={{ maxWidth: 600, mb: 3 }}>
             <CardContent>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="h3" color="text.secondary">
                     {title}
                 </Typography>
 
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="h5" color="text.secondary">
                     {description}
                 </Typography>
 
-                {arrayTitle && (
-                    <Typography variant="body2" color="text.secondary">
-                        {arrayTitle}
-                    </Typography>
+                {more && (
+                    more.map((item) => (
+                        <Typography variant="h5" color="text.secondary">{item}</Typography>
+                    ))
                 )}
 
-                {array && (
-                    array.map((item) => (
-                        <Typography variant="body3" color="text.secondary">{item}</Typography>
-                    ))
+                {arrayTitle && array && (
+                    <div style={{marginTop: "10px"}}>
+                        {arrayTitle && (
+                            <Typography variant="body3" color="text.secondary">
+                                {`${arrayTitle}: `}
+                            </Typography>
+                        )}
+
+                        {array && (
+                            array.map((item) => (
+                                <Typography variant="body3" color="text.secondary">{item}</Typography>
+                            ))
+                        )}
+                    </div>
                 )}
             </CardContent>
         </Card>
