@@ -1,12 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react'
 import Typography from '@mui/material/Typography'
 import { DeleteForever } from '@mui/icons-material'
-import { getFilteredCollection } from '../db/api'
+import { getFilteredCollection, updateOneInCollection } from '../db/api'
 import classes from './UserComment.module.css'
-import { updateOneInCollection } from '../db/api'
 
 function UserComment(props) {
-    const { comment, user, post, setPosts, posts } = props
+    const {
+        comment, user, post, setPosts, posts,
+    } = props
 
     const commentatorID = useRef(comment.commentator_id)
     const [commentator, setCommentator] = useState(comment.commentator_id)
@@ -33,7 +34,7 @@ function UserComment(props) {
         const commentIndex = post.comments.indexOf(comment)
 
         updateOneInCollection('posts', { _id: postID }, { $pop: { comments: 1 } }).then(() => {
-            let newPosts = [...posts]
+            const newPosts = [...posts]
             newPosts[posts.indexOf(post)].comments.splice(commentIndex, 1)
             setPosts(newPosts)
         })
@@ -55,7 +56,7 @@ function UserComment(props) {
 
             </div>
             {commentatorID.current === user._id && (
-                <DeleteForever onClick={handleDelete}/>
+                <DeleteForever onClick={handleDelete} />
             )}
         </div>
     )

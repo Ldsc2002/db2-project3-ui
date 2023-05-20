@@ -19,162 +19,50 @@ import { updateOneInCollection, deleteOneFromCollection } from '../db/api'
 
 /* eslint-disable react/jsx-props-no-spreading */
 
-const ExpandMore = styled((props) => {
-    const { expand, ...other } = props
-    return (
-        <>
-            {' '}
-            <Typography variant="body2" color="text.secondary">
-                Comments
-            </Typography>
-            {' '}
-            <IconButton {...other} />
-        </>
-    )
-})(({ theme, expand }) => ({
-    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-    transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
-    }),
-}))
-
 function PostCard(props) {
     const {
-        post, user, index, setPosts, posts, handle,
+        title, description, arrayTitle, arrayData,
     } = props
-
-    post.comments.sort((a, b) => new Date(a.date) - new Date(b.date))
-
-    const [newComment, setNewComment] = useState('')
-    const [expanded, setExpanded] = useState(false)
-    const [likes_, setLikes] = useState(post.likes)
-
-    const handleExpandClick = () => {
-        setExpanded(!expanded)
-    }
+    const [array, setArray] = useState([])
 
     useEffect(() => {
-        const postID = { $oid: post._id }
-        if (likes_ > post.likes) {
-            updateOneInCollection('posts', { _id: postID }, { $inc: { likes: 1 } })
+        if (arrayData !== undefined) {
+            const newArray = []
+            arrayData.forEach((item, index) => {
+                if (index === array.length - 1) {
+                    newArray.push(item)
+                } else {
+                    newArray.push(`${item}, `)
+                }
+            })
+
+            setArray(newArray)
         }
-    }, [likes_])
-
-    const handleSubmit = () => {
-        // eslint-disable-next-line no-underscore-dangle
-        const postID = { $oid: post._id }
-
-        const newCommentObj = {
-            // eslint-disable-next-line no-underscore-dangle
-            commentator_id: user._id,
-            comment: newComment,
-            date: new Date().toISOString().split('T')[0],
-        }
-
-        updateOneInCollection('posts', { _id: postID }, { $push: { comments: newCommentObj } }).then(() => {
-            const newPosts = [...posts]
-            newPosts[index].comments.push(newCommentObj)
-            setPosts(newPosts)
-        }).finally(() => {
-            setNewComment('')
-        })
-    }
-
-    const handleDeletePost = () => {
-        // eslint-disable-next-line no-underscore-dangle
-        const postID = { $oid: post._id }
-        const post_user_id = { $oid: post.user_id }
-        const current_user_id = { $oid: user._id }
-
-        if (post_user_id.$oid === current_user_id.$oid) {
-            deleteOneFromCollection('posts', { _id: postID })
-                .then(() => {
-                    handle()
-                })
-        }
-    }
+    }, [arrayData])
 
     return (
         <Card sx={{ maxWidth: 600, mb: 3 }}>
-            <CardHeader
-                action={(
-                    <IconButton aria-label="delete">
-                        {post.user_id === user._id ? (
-                            <DeleteForever onClick={handleDeletePost} />
-                        ) : null}
-                    </IconButton>
-                )}
-                subheader={post.date}
-            />
-            <CardMedia
-                component="img"
-                height="194"
-                image={post.image}
-                alt="Post image"
-            />
             <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                    {post.description}
+                    {title}
                 </Typography>
-            </CardContent>
 
-            <CardContent style={{ paddingLeft: '15px', paddingTop: '0px' }}>
-                <IconButton aria-label="like" sx={{ fontSize: '12px' }}>
-                    <Favorite onClick={() => setLikes(likes_ + 1)} />
-                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: '15px' }}>
-                        {likes_}
+                <Typography variant="body2" color="text.secondary">
+                    {description}
+                </Typography>
+
+                {arrayTitle && (
+                    <Typography variant="body2" color="text.secondary">
+                        {arrayTitle}
                     </Typography>
-                </IconButton>
+                )}
 
-                <div>
-                    {post.tags.map((tag) => (
-                        <Chip label={tag} key={tag} />
-                    ))}
-                </div>
+                {array && (
+                    array.map((item) => (
+                        <Typography variant="body3" color="text.secondary">{item}</Typography>
+                    ))
+                )}
             </CardContent>
-
-            <CardActions disableSpacing sx={{ ml: 1.2 }}>
-                <ExpandMore
-                    expand={expanded}
-                    onClick={handleExpandClick}
-                    aria-expanded={expanded}
-                    aria-label="show more"
-                >
-                    <ExpandMoreIcon />
-                </ExpandMore>
-            </CardActions>
-
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-                <CardContent sx={{ pt: 0 }}>
-                    {post.comments.map((comment) => (
-                        <div style={{ marginBottom: '15px' }} key={comment.commentator_id}>
-                            <UserComment comment={comment} user={user} post={post} setPosts={setPosts} posts={posts}/>
-                        </div>
-                    ))}
-
-                    <div className={classes.newComment}>
-                        <TextField
-                            value={newComment}
-                            margin="normal"
-                            fullWidth
-                            id="comment"
-                            label="New comment"
-                            sx={{ mr: 2 }}
-                            onChange={(e) => setNewComment(e.target.value)}
-                        />
-
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            sx={{ mt: 2, mb: 1, width: '120px' }}
-                            onClick={() => handleSubmit()}
-                        >
-                            Submit
-                        </Button>
-
-                    </div>
-                </CardContent>
-            </Collapse>
         </Card>
     )
 }
