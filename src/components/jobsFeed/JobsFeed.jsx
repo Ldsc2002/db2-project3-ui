@@ -19,8 +19,7 @@ function JobsFeed() {
                     <PostCard
                         key={post.ID}
                         title={post.title}
-                        description={`Country: ${post.country}`}
-                        moreText={{ Applicants: post.num_applicants, Salary: post.salary }}
+                        moreText={{ Country: post.country, Applicants: post.num_applicants, Salary: post.salary }}
                         arrayData={post.required_habilities}
                         arrayTitle="Required Skills"
                     />

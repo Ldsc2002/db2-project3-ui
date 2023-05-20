@@ -45,13 +45,15 @@ function PostCard(props) {
                     {title}
                 </Typography>
 
-                <Typography variant="h5" color="text.secondary">
-                    {description}
-                </Typography>
+                {description && (
+                    <Typography variant="h5" color="text.secondary">
+                        {description}
+                    </Typography>
+                )}
 
                 {more && (
                     more.map((item) => (
-                        <Typography variant="h5" color="text.secondary">{item}</Typography>
+                        <Typography variant="h6" color="text.secondary">{item}</Typography>
                     ))
                 )}
 
