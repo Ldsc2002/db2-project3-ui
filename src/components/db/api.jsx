@@ -1,3 +1,5 @@
+/* eslint-disable no-console */
+
 import neo4j from 'neo4j-driver'
 
 const driver = neo4j.driver(
@@ -16,21 +18,3 @@ export const getAllJobs = async () => {
             return []
         })
 }
-
-export const getFilteredCollection = async (collection, filter, sort) => null
-
-export const getProjection = async (collection, filter, projection) => null
-
-export const getAllFromCollection = async (collection) => null
-
-export const getFromCollectionPagination = async (collection, page, sort) => null
-
-export const getFromCollectionPaginationAggregation = async (collection, pipeline) => null
-
-export const updateOneInCollection = async (collection, filter, update) => null
-
-export const deleteOneFromCollection = async (collection, filter) => null
-
-export const aggregateInCollection = async (collection, pipeline) => null
-
-export const insertOneInCollection = async (collection, document) => null

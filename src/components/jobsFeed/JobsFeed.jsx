@@ -15,7 +15,7 @@ function JobsFeed() {
     return (
         <div className={classes.container}>
             <div>
-                {posts.map((post, index) => (
+                {posts.map((post) => (
                     <PostCard
                         key={post.ID}
                         title={post.title}

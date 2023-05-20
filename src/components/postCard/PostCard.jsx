@@ -29,7 +29,7 @@ function PostCard(props) {
 
     useEffect(() => {
         if (moreText !== undefined) {
-            let newArray = []
+            const newArray = []
             Object.keys(moreText).forEach((key) => {
                 newArray.push(`${key}: ${moreText[key]}`)
             })
@@ -56,7 +56,7 @@ function PostCard(props) {
                 )}
 
                 {arrayTitle && array && (
-                    <div style={{marginTop: "10px"}}>
+                    <div style={{ marginTop: '10px' }}>
                         {arrayTitle && (
                             <Typography variant="body3" color="text.secondary">
                                 {`${arrayTitle}: `}
