@@ -1,13 +1,7 @@
 import React, { useState } from 'react'
 import NavBar from '../navBar/NavBar'
-// import JobsList from '../jobsList/JobsList'
 import UserFeed from '../userFeed/UserFeed'
-// import UserInfo from '../userInfo/UserInfo'
-// import UserSearch from '../userSearch/UserSearch'
-// import UserStats from '../userStats/UserStats'
-// import PageStats from '../pageStats/PageStats'
 
-// const pages = ['Feed', 'Jobs', 'Charts', 'Statistics', 'Profile', 'Search']
 const pages = ['Feed']
 
 function App() {
