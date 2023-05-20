@@ -27,7 +27,7 @@ function NavBar(props) {
                             textDecoration: 'none',
                         }}
                     >
-                        LinkedIn
+                        Proyecto 3
                     </Typography>
 
                     <Box sx={{ flexGrow: 1, display: 'flex' }}>

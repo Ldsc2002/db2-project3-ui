@@ -3,9 +3,9 @@ import Button from '@mui/material/Button'
 import Modal from '@mui/material/Modal'
 import { getAllJobs } from '../db/api'
 import PostCard from '../postCard/PostCard'
-import classes from './UserFeed.module.css'
+import classes from './JobsFeed.module.css'
 
-function UserFeed() {
+function JobsFeed() {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
@@ -33,4 +33,4 @@ function UserFeed() {
     )
 }
 
-export default UserFeed
+export default JobsFeed
