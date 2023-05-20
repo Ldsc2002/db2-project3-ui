@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { getAllJobs } from '../db/api'
+import { getAllCompanies } from '../db/api'
 import PostCard from '../postCard/PostCard'
-import classes from './JobsFeed.module.css'
+import classes from './CompanyFeed.module.css'
 
 function JobsFeed() {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
-        getAllJobs().then((result) => {
+        getAllCompanies().then((result) => {
             setPosts(result)
         })
     }, [])
@@ -18,14 +18,17 @@ function JobsFeed() {
                 {posts.map((post) => (
                     <PostCard
                         key={post.ID}
-                        title={post.title}
+                        description={
+                            `Founded in ${post.creation_date.day}/
+                            ${post.creation_date.month}/
+                            ${post.creation_date.year}`
+                        }
+                        title={post.name}
                         moreText={{
+                            Field: post.field,
                             Country: post.country,
-                            Applicants: post.num_applicants,
-                            Salary: post.salary,
+                            Employees: post.num_workers.low,
                         }}
-                        arrayData={post.required_habilities}
-                        arrayTitle="Required Skills"
                     />
                 ))}
             </div>

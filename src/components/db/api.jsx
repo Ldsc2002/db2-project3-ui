@@ -28,3 +28,13 @@ export const getAllUsers = async () => {
             return []
         })
 }
+
+export const getAllCompanies = async () => {
+    const query = 'MATCH (n:enterprise) RETURN n'
+    return session.run(query)
+        .then((result) => result.records.map((record) => record.get('n').properties))
+        .catch((error) => {
+            console.log(error)
+            return []
+        })
+}
