@@ -18,3 +18,13 @@ export const getAllJobs = async () => {
             return []
         })
 }
+
+export const getAllUsers = async () => {
+    const query = 'MATCH (n:user) RETURN n'
+    return session.run(query)
+        .then((result) => result.records.map((record) => record.get('n').properties))
+        .catch((error) => {
+            console.log(error)
+            return []
+        })
+}
