@@ -48,3 +48,13 @@ export const getAllPosts = async () => {
             return []
         })
 }
+
+export const getAllGroups = async () => {
+    const query = 'MATCH (n:group) RETURN n'
+    return session.run(query)
+        .then((result) => result.records.map((record) => record.get('n').properties))
+        .catch((error) => {
+            console.log(error)
+            return []
+        })
+}

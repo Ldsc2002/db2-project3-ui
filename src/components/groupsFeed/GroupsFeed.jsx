@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react'
-import { getAllPosts } from '../db/api'
+import { getAllGroups } from '../db/api'
 import PostCard from '../postCard/PostCard'
-import classes from './PostsFeed.module.css'
+import classes from './GroupsFeed.module.css'
 
 function JobsFeed() {
     const [posts, setPosts] = useState([])
 
     useEffect(() => {
-        getAllPosts().then((result) => {
+        getAllGroups().then((result) => {
             console.log(result)
             setPosts(result)
         })
@@ -19,14 +19,14 @@ function JobsFeed() {
                 {posts.map((post) => (
                     <PostCard
                         key={post.ID}
-                        title={post.title}
-                        description={post.content}
+                        description={post.description}
+                        title={post.name}
                         moreText={{
-                            Likes: post.likes,
-                            "Posted on": post.date.day + "/" + post.date.month + "/" + post.date.year,
+                            Visibility: post.visibility,
+                            "Created on": post.created_date.day + "/" + post.created_date.month + "/" + post.created_date.year,
                         }}
-                        arrayData={post.comments}
-                        arrayTitle="Comments"
+                        arrayData={post.members}
+                        arrayTitle="Members"
                     />
                 ))}
             </div>

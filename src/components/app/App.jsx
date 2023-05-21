@@ -4,8 +4,9 @@ import JobsFeed from '../jobsFeed/JobsFeed'
 import PeopleFeed from '../peopleFeed/PeopleFeed'
 import CompanyFeed from '../companyFeed/CompanyFeed'
 import PostsFeed from '../postsFeed/PostsFeed'
+import GroupsFeed from '../groupsFeed/GroupsFeed'
 
-const pages = ['Posts', 'Jobs', 'People', 'Companies']
+const pages = ['Posts', 'Jobs', 'People', 'Companies', 'Groups']
 
 function App() {
     const [page, setPage] = useState('Posts')
@@ -17,6 +18,7 @@ function App() {
             {page === 'Jobs' && <JobsFeed />}
             {page === 'People' && <PeopleFeed />}
             {page === 'Companies' && <CompanyFeed />}
+            {page === 'Groups' && <GroupsFeed />}
         </div>
     )
 }
