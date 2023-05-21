@@ -8,7 +8,6 @@ function JobsFeed() {
 
     useEffect(() => {
         getAllGroups().then((result) => {
-            console.log(result)
             setPosts(result)
         })
     }, [])
@@ -23,7 +22,7 @@ function JobsFeed() {
                         title={post.name}
                         moreText={{
                             Visibility: post.visibility,
-                            "Created on": post.created_date.day + "/" + post.created_date.month + "/" + post.created_date.year,
+                            'Created on': `${post.created_date.day}/${post.created_date.month}/${post.created_date.year}`,
                         }}
                         arrayData={post.members}
                         arrayTitle="Members"
