@@ -38,3 +38,13 @@ export const getAllCompanies = async () => {
             return []
         })
 }
+
+export const getAllPosts = async () => {
+    const query = 'MATCH (n:post) RETURN n'
+    return session.run(query)
+        .then((result) => result.records.map((record) => record.get('n').properties))
+        .catch((error) => {
+            console.log(error)
+            return []
+        })
+}
