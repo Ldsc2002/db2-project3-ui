@@ -4,6 +4,7 @@ import AddNode from './pages/addNode'
 import AllNodes from './pages/allNodes'
 import AddRel from './pages/addRel'
 import DeleteNode from './pages/deleteNode'
+import DeleteProperty from './pages/deleteProperty'
 
 const options = [
     "Add node with label 'User'",
@@ -44,6 +45,8 @@ function AdminPanel() {
                 {page === options[3] && (<AddRel />)}
                 {page === options[4] && (<DeleteNode />)}
                 {page === options[5] && (<DeleteNode rel />)}
+                {page === options[6] && (<DeleteProperty />)}
+                {page === options[7] && (<DeleteProperty rel />)}
 
             </div>
 

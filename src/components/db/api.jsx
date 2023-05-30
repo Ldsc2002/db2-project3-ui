@@ -120,3 +120,13 @@ export const deleteRel = async (label, properties) => {
             return []
         })
 }
+
+export const deleteProperty = async (label, properties) => {
+    const query = `MATCH (n:${label}) REMOVE n.${properties}`
+    return session.run(query)
+        .then((result) => result.records.map((record) => record.get('n').properties))
+        .catch((error) => {
+            console.log(error)
+            return []
+        })
+}
