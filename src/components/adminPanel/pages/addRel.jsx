@@ -17,8 +17,8 @@ function AddRel() {
             <input id="title" type="text" placeholder="Enter job title" />
 
             <button onClick={onSubmit} type="submit">Submit</button>
-        </div>            
+        </div>
     )
 }
 
-export default AddRel 
+export default AddRel

@@ -3,6 +3,7 @@ import classes from './AdminPanel.module.css'
 import AddNode from './pages/addNode'
 import AllNodes from './pages/allNodes'
 import AddRel from './pages/addRel'
+import DeleteNode from './pages/deleteNode'
 
 const options = [
     "Add node with label 'User'",
@@ -41,6 +42,8 @@ function AdminPanel() {
                 {page === options[1] && (<AllNodes />)}
                 {page === options[2] && (<AddNode update />)}
                 {page === options[3] && (<AddRel />)}
+                {page === options[4] && (<DeleteNode />)}
+                {page === options[5] && (<DeleteNode rel />)}
 
             </div>
 

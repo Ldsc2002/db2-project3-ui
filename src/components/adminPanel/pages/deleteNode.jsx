@@ -1,21 +1,33 @@
 import React from 'react'
-import { deleteNode } from '../../db/api'
+import { deleteNode, deleteRel } from '../../db/api'
 
-function DeleteNode() {
+function DeleteNode(props) {
+    const { rel } = props
+
     const onSubmit = (e) => {
         e.preventDefault()
 
         const name = document.getElementById('name').value
 
-        deleteNode({ name })
+        if (rel) {
+            const title = document.getElementById('title').value
+            deleteRel({ name, title }) //TODO: fix this
+        } else {
+            deleteNode({ name })
+        }
     }
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
             <input id="name" type="text" placeholder="Enter name" />
+
+            {rel && (
+                <input id="title" type="text" placeholder="Enter job title" />
+            )}
+
             <button onClick={onSubmit} type="submit">Submit</button>
-        </div>            
+        </div>
     )
 }
 
-export default DeleteNode 
+export default DeleteNode
