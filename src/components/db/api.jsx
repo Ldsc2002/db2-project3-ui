@@ -80,3 +80,13 @@ export const addNode = async (label, properties) => {
             return []
         })
 }
+
+export const updateNode = async (label, properties) => {
+    const query = `MATCH (n:${label}) SET n += ${properties} RETURN n`
+    return session.run(query)
+        .then((result) => result.records.map((record) => record.get('n').properties))
+        .catch((error) => {
+            console.log(error)
+            return []
+        })
+}

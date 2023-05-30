@@ -12,8 +12,6 @@ function JobsFeed() {
         })
     }, [])
 
-    console.log(posts)
-
     return (
         <div className={classes.container}>
             <div>

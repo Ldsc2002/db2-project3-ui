@@ -1,46 +1,49 @@
 import React from 'react'
-import { addNode } from '../../db/api'
+import { addNode, updateNode } from '../../db/api'
 
-function AddNode() {
+function AddNode(props) {
+    const { update } = props
+
     const onSubmit = (e) => {
         e.preventDefault()
 
-        let skills = document.getElementById('skills').value.split(',')
-        let name = document.getElementById('name')
-        let email = document.getElementById('email')
-        let age = document.getElementById('age')
-        let phone = document.getElementById('phone')
-        let openToWork = document.getElementById('openToWork').checked
+        const skills = document.getElementById('skills').value.split(',')
+        const name = document.getElementById('name')
+        const email = document.getElementById('email')
+        const age = document.getElementById('age')
+        const phone = document.getElementById('phone')
+        const openToWork = document.getElementById('openToWork').checked
 
-        let data = {
+        const data = {
             name: name.value,
             email: email.value,
-            age: parseInt(age.value),
-            phone: parseInt(phone.value),
+            age: parseInt(age.value, 10),
+            phone: parseInt(phone.value, 10),
             open_to_work: openToWork,
-            skills: skills,
+            skills,
         }
 
-        console.log(data)
-
-        addNode("user", data)
-        
+        if (update) {
+            updateNode('user', data)
+        } else {
+            addNode('user', data)
+        }
     }
 
     return (
-        <div style={{display: 'flex', flexDirection: 'column'}}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
             <input id="name" type="text" placeholder="Enter name" />
             <input id="email" type="text" placeholder="Enter email" />
             <input id="age" type="text" placeholder="Enter age" />
             <input id="phone" type="text" placeholder="Enter phone number" />
             <input id="skills" type="text" placeholder="Enter skills" />
 
-            <div style={{display: 'flex', flexDirection: 'row'}}>
-                <label htmlFor="openToWork">Open to work</label>
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <p>Open to work: </p>
                 <input id="openToWork" type="checkbox" placeholder="Open to work:" />
             </div>
 
-            <button onClick={onSubmit}>
+            <button onClick={onSubmit} type="submit">
                 Submit
             </button>
         </div>
