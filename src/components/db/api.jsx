@@ -9,6 +9,7 @@ const driver = neo4j.driver(
 
 const session = driver.session()
 
+// Getters
 export const getAllJobs = async () => {
     const query = 'MATCH (n:job) RETURN n'
     return session.run(query)
@@ -51,6 +52,27 @@ export const getAllPosts = async () => {
 
 export const getAllGroups = async () => {
     const query = 'MATCH (n:group) RETURN n'
+    return session.run(query)
+        .then((result) => result.records.map((record) => record.get('n').properties))
+        .catch((error) => {
+            console.log(error)
+            return []
+        })
+}
+
+export const getAllNodes = async () => {
+    const query = 'MATCH (n) RETURN n'
+    return session.run(query)
+        .then((result) => result.records.map((record) => record.get('n').properties))
+        .catch((error) => {
+            console.log(error)
+            return []
+        })
+}
+
+// Setters
+export const addNode = async (label, properties) => {
+    const query = `CREATE (n:${label} ${properties}) RETURN n`
     return session.run(query)
         .then((result) => result.records.map((record) => record.get('n').properties))
         .catch((error) => {

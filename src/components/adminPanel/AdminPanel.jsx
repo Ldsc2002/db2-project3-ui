@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
 import classes from './AdminPanel.module.css'
+import AddNode from './pages/addNode'
+import AllNodes from './pages/allNodes'
 
 const options = [
     "Add node with label 'User'",
-    "Add node with multiple labels",
-    "View all nodes",
+    'View all nodes',
     "Update node with label 'User'",
-    "Create relationship between user and job",
+    'Create relationship between user and job',
     "Delete node with label 'User'",
-    "Delete relationship between user and job",
+    'Delete relationship between user and job',
     "Delete property from node with label 'User'",
-    "Delete property from relationship between user and job"
+    'Delete property from relationship between user and job',
 ]
 
 function AdminPanel() {
@@ -20,11 +21,12 @@ function AdminPanel() {
         <div className={classes.container}>
             <div className={classes.buttonContainer}>
                 {options.map((option) => (
-                    <button 
-                        className={classes.navButton} 
-                        key={option} type="button" 
+                    <button
+                        className={classes.navButton}
+                        key={option}
+                        type="button"
                         onClick={() => setPage(option)}
-                        style={{outline: `${page === option ? '3px solid black' : 'none'}`}}
+                        style={{ outline: `${page === option ? '3px solid black' : 'none'}` }}
                     >
                         {option}
                     </button>
@@ -33,6 +35,9 @@ function AdminPanel() {
 
             <div className={classes.pageContainer}>
                 <h1>{page}</h1>
+
+                {page === options[0] && (<AddNode />)}
+                {page === options[1] && (<AllNodes />)}
 
             </div>
 
