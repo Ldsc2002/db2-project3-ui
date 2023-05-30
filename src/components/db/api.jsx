@@ -90,3 +90,23 @@ export const updateNode = async (label, properties) => {
             return []
         })
 }
+
+export const relBetweenUserAndJob = async (user, job) => {
+    const query = `MATCH (u:user {username: '${user}'}), (j:job {title: '${job}'}) CREATE (u)-[r:applied]->(j) RETURN r`
+    return session.run(query)
+        .then((result) => result.records.map((record) => record.get('r').properties))
+        .catch((error) => {
+            console.log(error)
+            return []
+        })
+}
+
+export const deleteNode = async (label, properties) => {
+    const query = `MATCH (n:${label} ${properties}) DETACH DELETE n`
+    return session.run(query)
+        .then((result) => result.records.map((record) => record.get('n').properties))
+        .catch((error) => {
+            console.log(error)
+            return []
+        })
+}

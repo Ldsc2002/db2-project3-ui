@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import classes from './AdminPanel.module.css'
 import AddNode from './pages/addNode'
 import AllNodes from './pages/allNodes'
+import AddRel from './pages/addRel'
 
 const options = [
     "Add node with label 'User'",
@@ -38,6 +39,8 @@ function AdminPanel() {
 
                 {page === options[0] && (<AddNode />)}
                 {page === options[1] && (<AllNodes />)}
+                {page === options[2] && (<AddNode update />)}
+                {page === options[3] && (<AddRel />)}
 
             </div>
 
