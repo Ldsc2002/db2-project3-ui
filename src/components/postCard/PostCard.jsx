@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography'
 
 function PostCard(props) {
     const {
-        title, description, arrayTitle, arrayData, moreText,
+        title, description, edited, arrayTitle, arrayData, moreText,
     } = props
     const [array, setArray] = useState([])
     const [more, setMore] = useState([])
@@ -48,6 +48,12 @@ function PostCard(props) {
                 {description && (
                     <Typography variant="h5" color="text.secondary">
                         {description}
+                    </Typography>
+                )}
+
+                {edited && (
+                    <Typography variant="h6" color="text.secondary">
+                        {`Edited: ${edited}`}
                     </Typography>
                 )}
 

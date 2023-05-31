@@ -9,6 +9,7 @@ function JobsFeed() {
     useEffect(() => {
         getAllPosts().then((result) => {
             setPosts(result)
+            console.log(result)
         })
     }, [])
 
@@ -22,7 +23,9 @@ function JobsFeed() {
                         description={post.content}
                         moreText={{
                             Likes: post.likes,
-                            'Posted on': `${post.date.day}/${post.date.month}/${post.date.year}`,
+                            Edited: post.edited,
+                            'Posted on': `${post.date}`,
+
                         }}
                         arrayData={post.comments}
                         arrayTitle="Comments"

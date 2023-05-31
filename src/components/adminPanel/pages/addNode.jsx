@@ -15,6 +15,7 @@ function AddNode(props) {
         const age = document.getElementById('age')
         const phone = document.getElementById('phone')
         const openToWork = document.getElementById('openToWork').checked
+        const admin = document.getElementById('admin').checked
 
         skills = skills.includes(',') ? skills.split(',') : [skills]
 
@@ -50,7 +51,7 @@ function AddNode(props) {
 
             updateNode('user', { name: nameFilter }, data)
         } else {
-            addNode('user', data)
+            addNode('user', data, admin)
         }
     }
 
@@ -69,6 +70,11 @@ function AddNode(props) {
             <div style={{ display: 'flex', flexDirection: 'row' }}>
                 <p>Open to work: </p>
                 <input id="openToWork" type="checkbox" placeholder="Open to work:" />
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'row' }}>
+                <p>Admin: </p>
+                <input id="admin" type="checkbox" placeholder="Admin:" />
             </div>
 
             <button onClick={onSubmit} type="submit">

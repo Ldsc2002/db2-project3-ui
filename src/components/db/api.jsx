@@ -67,14 +67,22 @@ export const getAllCompanies = async () => {
 }
 
 export const getAllPosts = async () => {
-    const query = 'MATCH (n:post) RETURN n'
-    return session.run(query)
-        .then((result) => result.records.map((record) => record.get('n').properties))
-        .catch((error) => {
-            console.log(error)
-            return []
-        })
-}
+    const query =
+      'MATCH (u:user)-[c:comment]->(p:post) OPTIONAL MATCH (p:post) RETURN p, COLLECT(c.comment) AS comments';
+  
+    try {
+      const result = await session.run(query);
+      return result.records.map((record) => ({
+        ...record.get('p').properties,
+        comments: record.get('comments') || [], // Set comments to an empty array if null
+      }));
+    } catch (error) {
+      console.log(error)
+      return []
+    }
+  }
+  
+  
 
 export const getAllGroups = async () => {
     const query = 'MATCH (n:group) RETURN n'
@@ -97,16 +105,28 @@ export const getAllNodes = async () => {
 }
 
 // Setters
-export const addNode = async (label, propertiesData) => {
+export const addNode = async (label, propertiesData, admin) => {
     const properties = dataToString(propertiesData)
 
-    const query = `CREATE (n:${label} {${properties}}) RETURN n`
-    return session.run(query)
-        .then((result) => result.records.map((record) => record.get('n').properties))
-        .catch((error) => {
-            console.log(error)
-            return []
-        })
+    // if admin is true, label admin
+    if (admin) {
+        const query = `CREATE (n:${label}:admin {${properties}}) RETURN n`
+        return session.run(query)
+            .then((result) => result.records.map((record) => record.get('n').properties))
+            .catch((error) => {
+                console.log(error)
+                return []
+            })
+    }
+    else {
+        const query = `CREATE (n:${label} {${properties}}) RETURN n`
+        return session.run(query)
+            .then((result) => result.records.map((record) => record.get('n').properties))
+            .catch((error) => {
+                console.log(error)
+                return []
+            })
+    }
 }
 
 export const updateNode = async (label, propertiesData, newData) => {
@@ -122,11 +142,14 @@ export const updateNode = async (label, propertiesData, newData) => {
         })
 }
 
-export const relBetweenUserAndJob = async (user, job, salary) => {
+export const relBetweenUserAndJob = async (user, job, state, message) => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; // Adding 1 since getMonth() returns zero-based index
+    const day = date.getDate();
     const query = `MATCH (u:user {email: '${user}'}), (j:job {title: '${job}'})
-                CREATE (u)-[r:applied {desired_salary: ${salary}}]->(j)
+                CREATE (u)-[r:applied {date: date({year: ${year}, month: ${month}, day: ${day}}), state: '${state}', message: '${message}'}]->(j)
                 RETURN r`;
-
 
     return session.run(query)
         .then((result) => result.records.map((record) => record.get('r').properties))

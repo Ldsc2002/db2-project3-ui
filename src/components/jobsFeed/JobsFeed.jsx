@@ -21,10 +21,10 @@ function JobsFeed() {
                         title={post.title}
                         moreText={{
                             Country: post.country,
-                            Applicants: post.num_applicants,
-                            Salary: post.salary,
+                            Applicants: post.offering_salary,
+                            'Offering Salary': post.offering_salary,
                         }}
-                        arrayData={post.required_habilities}
+                        arrayData={post.required_abilities}
                         arrayTitle="Required Skills"
                     />
                 ))}
