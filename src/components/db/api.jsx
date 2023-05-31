@@ -129,17 +129,28 @@ export const addNode = async (label, propertiesData, admin) => {
     }
 }
 
-export const updateNode = async (label, propertiesData, newData) => {
+export const updateNode = async (label, propertiesData, newData, admin) => {
     const properties = dataToString(propertiesData)
     const newProperties = dataToString(newData)
 
-    const query = `MATCH (n:${label} {${properties}}) SET n += {${newProperties}} RETURN n`
-    return session.run(query)
+    if (admin) {
+        const query = `MATCH (n:${label} {${properties}}) SET n += {${newProperties}} SET n:user:admin RETURN n`
+        return session.run(query)
         .then((result) => result.records.map((record) => record.get('n').properties))
         .catch((error) => {
             console.log(error)
             return []
         })
+    }
+    else {
+        const query = `MATCH (n:${label} {${properties}}) SET n += {${newProperties}} RETURN n`
+        return session.run(query)
+            .then((result) => result.records.map((record) => record.get('n').properties))
+            .catch((error) => {
+                console.log(error)
+                return []
+            })
+    } 
 }
 
 export const relBetweenUserAndJob = async (user, job, state, message) => {
@@ -148,7 +159,7 @@ export const relBetweenUserAndJob = async (user, job, state, message) => {
     const month = date.getMonth() + 1; // Adding 1 since getMonth() returns zero-based index
     const day = date.getDate();
     const query = `MATCH (u:user {email: '${user}'}), (j:job {title: '${job}'})
-                CREATE (u)-[r:applied {date: date({year: ${year}, month: ${month}, day: ${day}}), state: '${state}', message: '${message}'}]->(j)
+                CREATE (u)-[r:applies {date: date({year: ${year}, month: ${month}, day: ${day}}), cv: '${state}', message: '${message}'}]->(j)
                 RETURN r`;
 
     return session.run(query)
@@ -172,7 +183,7 @@ export const deleteNode = async (label, propertiesData) => {
 }
 
 export const deleteRel = async (user, job) => {
-    const query = `MATCH (n:user {name: '${user}'})-[r:applied]->(j:job {title: '${job}'}) DELETE r`
+    const query = `MATCH (n:user {name: '${user}'})-[r:applies]->(j:job {title: '${job}'}) DELETE r`
     return session.run(query)
         .then((result) => result.records.map((record) => record.get('r').properties))
         .catch((error) => {
@@ -192,7 +203,7 @@ export const deleteProperty = async (name, property) => {
 }
 
 export const deleteRelProperty = async (user, job, property) => {
-    const query = `MATCH (n:user {name: '${user}'})-[r:applied]->(j:job {title: '${job}'}) REMOVE r.${property}`
+    const query = `MATCH (n:user {name: '${user}'})-[r:applies]->(j:job {title: '${job}'}) REMOVE r.${property}`
     return session.run(query)
         .then((result) => result.records.map((record) => record.get('r').properties))
         .catch((error) => {
@@ -200,3 +211,5 @@ export const deleteRelProperty = async (user, job, property) => {
             return []
         })
 }
+  
+  

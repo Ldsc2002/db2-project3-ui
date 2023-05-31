@@ -49,7 +49,8 @@ function AddNode(props) {
                 }
             })
 
-            updateNode('user', { name: nameFilter }, data)
+            updateNode('user', { name: nameFilter }, data, admin)
+
         } else {
             addNode('user', data, admin)
         }
