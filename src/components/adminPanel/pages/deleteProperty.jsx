@@ -13,7 +13,7 @@ function DeleteProperty(props) {
             const appliesTo = document.getElementById('appliesTo').checked
 
             if (appliesTo) {
-                deleteRelProperty(name, job, 'applies_to')
+                deleteRelProperty(name, job, 'desired_salary')
             }
         } else {
             const name = document.getElementById('name').value
@@ -42,7 +42,7 @@ function DeleteProperty(props) {
                     <input id="job" type="text" placeholder="Job to modify" />
 
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
-                        <p>Applies to: </p>
+                        <p>Salary: </p>
                         <input id="appliesTo" type="checkbox" />
                     </div>
                 </>

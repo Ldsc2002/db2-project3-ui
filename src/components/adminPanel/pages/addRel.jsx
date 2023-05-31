@@ -5,16 +5,19 @@ function AddRel() {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        const name = document.getElementById('name').value
+        const email = document.getElementById('email').value
         const title = document.getElementById('title').value
+        const salary = document.getElementById('salary').value
+        
 
-        relBetweenUserAndJob(name, title)
+        relBetweenUserAndJob(email, title, salary)
     }
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <input id="name" type="text" placeholder="Enter name" />
+            <input id="email" type="text" placeholder="Enter email" />
             <input id="title" type="text" placeholder="Enter job title" />
+            <input id="salary" type="number" placeholder="Enter desired salary" />
 
             <button onClick={onSubmit} type="submit">Submit</button>
         </div>

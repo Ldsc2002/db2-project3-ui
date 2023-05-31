@@ -122,8 +122,12 @@ export const updateNode = async (label, propertiesData, newData) => {
         })
 }
 
-export const relBetweenUserAndJob = async (user, job) => {
-    const query = `MATCH (u:user {username: '${user}'}), (j:job {title: '${job}'}) CREATE (u)-[r:applied]->(j) RETURN r`
+export const relBetweenUserAndJob = async (user, job, salary) => {
+    const query = `MATCH (u:user {email: '${user}'}), (j:job {title: '${job}'})
+                CREATE (u)-[r:applied {desired_salary: ${salary}}]->(j)
+                RETURN r`;
+
+
     return session.run(query)
         .then((result) => result.records.map((record) => record.get('r').properties))
         .catch((error) => {
@@ -145,7 +149,7 @@ export const deleteNode = async (label, propertiesData) => {
 }
 
 export const deleteRel = async (user, job) => {
-    const query = `MATCH (n:user {username: '${user}'})-[r:applied]->(j:job {title: '${job}'}) DELETE r`
+    const query = `MATCH (n:user {name: '${user}'})-[r:applied]->(j:job {title: '${job}'}) DELETE r`
     return session.run(query)
         .then((result) => result.records.map((record) => record.get('r').properties))
         .catch((error) => {
@@ -155,7 +159,7 @@ export const deleteRel = async (user, job) => {
 }
 
 export const deleteProperty = async (name, property) => {
-    const query = `MATCH (n:user {username: '${name}'}) REMOVE n.${property}`
+    const query = `MATCH (n:user {name: '${name}'}) REMOVE n.${property}`
     return session.run(query)
         .then((result) => result.records.map((record) => record.get('n').properties))
         .catch((error) => {
@@ -165,7 +169,7 @@ export const deleteProperty = async (name, property) => {
 }
 
 export const deleteRelProperty = async (user, job, property) => {
-    const query = `MATCH (n:user {username: '${user}'})-[r:applied]->(j:job {title: '${job}'}) REMOVE r.${property}`
+    const query = `MATCH (n:user {name: '${user}'})-[r:applied]->(j:job {title: '${job}'}) REMOVE r.${property}`
     return session.run(query)
         .then((result) => result.records.map((record) => record.get('r').properties))
         .catch((error) => {

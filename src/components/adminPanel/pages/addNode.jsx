@@ -10,6 +10,7 @@ function AddNode(props) {
         let skills = document.getElementById('skills').value
         const nameFilter = update ? document.getElementById('id').value : ''
         const name = document.getElementById('name')
+        const id_user = document.getElementById('id_user')
         const email = document.getElementById('email')
         const age = document.getElementById('age')
         const phone = document.getElementById('phone')
@@ -19,6 +20,7 @@ function AddNode(props) {
 
         const data = {
             name: name.value,
+            ID: id_user.value,
             email: email.value,
             age: parseInt(age.value, 10),
             phone: parseInt(phone.value, 10),
@@ -58,6 +60,7 @@ function AddNode(props) {
                 <input id="id" type="text" placeholder="Enter name to update" />
             )}
             <input id="name" type="text" placeholder="Enter name" />
+            <input id="id_user" type="text" placeholder="Enter ID" />
             <input id="email" type="text" placeholder="Enter email" />
             <input id="age" type="text" placeholder="Enter age" />
             <input id="phone" type="text" placeholder="Enter phone number" />
