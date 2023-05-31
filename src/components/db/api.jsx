@@ -153,6 +153,43 @@ export const updateNode = async (label, propertiesData, newData, admin) => {
     } 
 }
 
+export const updateRel = async (user, job, newData) => {
+    const properties = dataToString(newData)
+
+    const query = `MATCH (n:user {email: '${user}'})-[r:applies]->(j:job {title: '${job}'}) SET r += {${properties}} RETURN r`
+    return session.run(query)
+        .then((result) => result.records.map((record) => record.get('r').properties))
+        .catch((error) => {
+            console.log(error)
+            return []
+        })
+}
+
+export const updateDeleteRel = async (user, job, newJob, state, message) => {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; // Adding 1 since getMonth() returns zero-based index
+    const day = date.getDate();
+
+    const query = `
+    MATCH (u:user {email: '${user}'})-[r:applies]->(j:job {title: '${job}'})
+    DELETE r
+    WITH u, j
+    MATCH (j2:job {title: '${newJob}'})
+    CREATE (u)-[:applies {date: date({year: ${year}, month: ${month}, day: ${day}}), cv: '${state}', message: '${message}'}]->(j2)
+    RETURN u, j2`;
+
+    return session.run(query)
+        .then((result) => result.records.map((record) => record.get('n').properties))
+        .catch((error) => {
+            console.log(error)
+            return []
+        }
+    )
+}
+
+
+
 export const relBetweenUserAndJob = async (user, job, state, message) => {
     const date = new Date();
     const year = date.getFullYear();

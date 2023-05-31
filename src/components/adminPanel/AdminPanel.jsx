@@ -5,12 +5,14 @@ import AllNodes from './pages/allNodes'
 import AddRel from './pages/addRel'
 import DeleteNode from './pages/deleteNode'
 import DeleteProperty from './pages/deleteProperty'
+import UpdateRel from './pages/updateRel'
 
 const options = [
     "Add node with label 'User'",
     'View all nodes',
     "Update node with label 'User'",
     'Create relationship between user and job',
+    'Update relationship between user and job',
     "Delete node with label 'User'",
     'Delete relationship between user and job',
     "Delete property from node with label 'User'",
@@ -43,10 +45,11 @@ function AdminPanel() {
                 {page === options[1] && (<AllNodes />)}
                 {page === options[2] && (<AddNode update />)}
                 {page === options[3] && (<AddRel />)}
-                {page === options[4] && (<DeleteNode />)}
-                {page === options[5] && (<DeleteNode rel />)}
-                {page === options[6] && (<DeleteProperty />)}
-                {page === options[7] && (<DeleteProperty rel />)}
+                {page === options[4] && (<UpdateRel />)}
+                {page === options[5] && (<DeleteNode />)}
+                {page === options[6] && (<DeleteNode rel />)}
+                {page === options[7] && (<DeleteProperty />)}
+                {page === options[8] && (<DeleteProperty rel />)}
 
             </div>
 
