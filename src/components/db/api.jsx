@@ -73,7 +73,6 @@ export const getAllNodes = async () => {
 // Setters
 export const addNode = async (label, propertiesData) => {
     let properties = dataToString(propertiesData)
-    debugger
 
     const query = `CREATE (n:${label} {${properties}}) RETURN n`
     return session.run(query)
@@ -84,10 +83,11 @@ export const addNode = async (label, propertiesData) => {
         })
 }
 
-export const updateNode = async (label, propertiesData) => {
+export const updateNode = async (label, propertiesData, newData) => {
     let properties = dataToString(propertiesData)
+    let newProperties = dataToString(newData)
 
-    const query = `MATCH (n:${label}) SET n += ${properties} RETURN n`
+    const query = `MATCH (n:${label } {${properties}}) SET n += {${newProperties}} RETURN n`
     return session.run(query)
         .then((result) => result.records.map((record) => record.get('n').properties))
         .catch((error) => {

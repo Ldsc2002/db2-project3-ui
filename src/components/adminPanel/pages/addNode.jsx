@@ -8,6 +8,7 @@ function AddNode(props) {
         e.preventDefault()
 
         let skills = document.getElementById('skills').value
+        const nameFilter = update ? document.getElementById('id').value : ""
         const name = document.getElementById('name')
         const email = document.getElementById('email')
         const age = document.getElementById('age')
@@ -25,8 +26,27 @@ function AddNode(props) {
             abilities: skills,
         }
 
+        if (age.value === '') {
+            delete data.age
+        }
+
+        if (phone.value === '') {
+            delete data.phone
+        }
+
+        if (skills[0] === '') {
+            delete data.abilities
+        }
+
         if (update) {
-            updateNode('user', data)
+            // check all fields in data and remove empty ones
+            for (const key in data) {
+                if (data[key] === '') {
+                    delete data[key]
+                } 
+            }
+
+            updateNode('user', { name: nameFilter }, data)
         } else {
             addNode('user', data)
         }
@@ -34,6 +54,9 @@ function AddNode(props) {
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
+            {update && (
+                <input id="id" type="text" placeholder="Enter name to update" />
+            )}
             <input id="name" type="text" placeholder="Enter name" />
             <input id="email" type="text" placeholder="Enter email" />
             <input id="age" type="text" placeholder="Enter age" />
