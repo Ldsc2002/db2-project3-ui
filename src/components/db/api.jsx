@@ -118,8 +118,8 @@ export const deleteNode = async (label, propertiesData) => {
         })
 }
 
-export const deleteRel = async (label, properties) => {
-    const query = `MATCH ()-[r:${label} ${properties}]-() DELETE r`
+export const deleteRel = async (user, job) => {
+    const query = `MATCH (n:user {username: '${user}'})-[r:applied]->(j:job {title: '${job}'}) DELETE r`
     return session.run(query)
         .then((result) => result.records.map((record) => record.get('r').properties))
         .catch((error) => {
