@@ -7,32 +7,30 @@ function DeleteProperty(props) {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        let email = document.getElementById('email').checked
-        let phone = document.getElementById('phone').checked
-        let age = document.getElementById('age').checked
-        let openToWork = document.getElementById('openToWork').checked
-        let appliesTo = document.getElementById('appliesTo').checked
+        const email = document.getElementById('email').checked
+        const phone = document.getElementById('phone').checked
+        const age = document.getElementById('age').checked
+        const openToWork = document.getElementById('openToWork').checked
+        const appliesTo = document.getElementById('appliesTo').checked
 
         if (rel) {
             if (appliesTo) {
                 deleteProperty('rel', 'applies_to')
             }
-        } else {
-            if (email) {
-                deleteProperty('user', 'email')
-            } else if (phone) {
-                deleteProperty('user', 'phone')
-            } else if (age) {
-                deleteProperty('user', 'age')
-            } else if (openToWork) {
-                deleteProperty('user', 'open_to_work')
-            }
+        } else if (email) {
+            deleteProperty('user', 'email')
+        } else if (phone) {
+            deleteProperty('user', 'phone')
+        } else if (age) {
+            deleteProperty('user', 'age')
+        } else if (openToWork) {
+            deleteProperty('user', 'open_to_work')
         }
     }
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {rel && (           
+            {rel && (
                 <div style={{ display: 'flex', flexDirection: 'row' }}>
                     <p>Applies to: </p>
                     <input id="appliesTo" type="checkbox" />
@@ -43,17 +41,17 @@ function DeleteProperty(props) {
                 <div>
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
                         <p>Email</p>
-                        <input id="email" type="checkbox"/>
+                        <input id="email" type="checkbox" />
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
                         <p>Phone</p>
-                        <input id="phone" type="checkbox"/>
+                        <input id="phone" type="checkbox" />
                     </div>
-                    
+
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
                         <p>Age</p>
-                        <input id="age" type="checkbox"/>
+                        <input id="age" type="checkbox" />
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'row' }}>
@@ -65,7 +63,7 @@ function DeleteProperty(props) {
 
             <button onClick={onSubmit} type="submit">
                 Submit
-            </button> 
+            </button>
 
         </div>
     )

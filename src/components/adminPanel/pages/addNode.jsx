@@ -7,12 +7,14 @@ function AddNode(props) {
     const onSubmit = (e) => {
         e.preventDefault()
 
-        const skills = document.getElementById('skills').value.split(',')
+        let skills = document.getElementById('skills').value
         const name = document.getElementById('name')
         const email = document.getElementById('email')
         const age = document.getElementById('age')
         const phone = document.getElementById('phone')
         const openToWork = document.getElementById('openToWork').checked
+
+        skills = skills.includes(',') ? skills.split(',') : [skills]
 
         const data = {
             name: name.value,
@@ -20,7 +22,7 @@ function AddNode(props) {
             age: parseInt(age.value, 10),
             phone: parseInt(phone.value, 10),
             open_to_work: openToWork,
-            skills,
+            abilities: skills,
         }
 
         if (update) {

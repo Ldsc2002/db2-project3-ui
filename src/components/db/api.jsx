@@ -71,8 +71,11 @@ export const getAllNodes = async () => {
 }
 
 // Setters
-export const addNode = async (label, properties) => {
-    const query = `CREATE (n:${label} ${properties}) RETURN n`
+export const addNode = async (label, propertiesData) => {
+    let properties = dataToString(propertiesData)
+    debugger
+
+    const query = `CREATE (n:${label} {${properties}}) RETURN n`
     return session.run(query)
         .then((result) => result.records.map((record) => record.get('n').properties))
         .catch((error) => {
@@ -81,7 +84,9 @@ export const addNode = async (label, properties) => {
         })
 }
 
-export const updateNode = async (label, properties) => {
+export const updateNode = async (label, propertiesData) => {
+    let properties = dataToString(propertiesData)
+
     const query = `MATCH (n:${label}) SET n += ${properties} RETURN n`
     return session.run(query)
         .then((result) => result.records.map((record) => record.get('n').properties))
@@ -101,8 +106,10 @@ export const relBetweenUserAndJob = async (user, job) => {
         })
 }
 
-export const deleteNode = async (label, properties) => {
-    const query = `MATCH (n:${label} ${properties}) DETACH DELETE n`
+export const deleteNode = async (label, propertiesData) => {
+    let properties = dataToString(propertiesData)
+
+    const query = `MATCH (n:${label} {${properties}}) DETACH DELETE n`
     return session.run(query)
         .then((result) => result.records.map((record) => record.get('n').properties))
         .catch((error) => {
@@ -129,4 +136,34 @@ export const deleteProperty = async (label, properties) => {
             console.log(error)
             return []
         })
+}
+
+const dataToString = (propertiesData) => {
+    let properties = ''
+
+    Object.keys(propertiesData).forEach((key) => {
+        // if data is boolean, don't add quotes
+        if (typeof propertiesData[key] === 'boolean') {
+            properties += `${key}: ${propertiesData[key]}, `
+
+        } else if (typeof propertiesData[key] === 'number') {
+            properties += `${key}: ${propertiesData[key]}, `
+
+        } else if (propertiesData[key] instanceof Array) {
+            let array = '['
+            propertiesData[key].forEach((element) => {
+                array += `'${element}', `
+            })
+            array = array.slice(0, -2)
+            array += ']'
+
+            properties += `${key}: ${array}, `
+        
+        } else {
+            properties += `${key}: '${propertiesData[key]}', `
+
+        }
+    })
+    
+    return properties.slice(0, -2)
 }

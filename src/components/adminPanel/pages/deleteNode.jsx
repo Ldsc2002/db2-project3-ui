@@ -11,9 +11,9 @@ function DeleteNode(props) {
 
         if (rel) {
             const title = document.getElementById('title').value
-            deleteRel({ name, title }) //TODO: fix this
+            deleteRel({ name, title }) // TODO: fix this
         } else {
-            deleteNode({ name })
+            deleteNode('user', { name })
         }
     }
 
