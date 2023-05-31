@@ -8,7 +8,7 @@ function AddNode(props) {
         e.preventDefault()
 
         let skills = document.getElementById('skills').value
-        const nameFilter = update ? document.getElementById('id').value : ""
+        const nameFilter = update ? document.getElementById('id').value : ''
         const name = document.getElementById('name')
         const email = document.getElementById('email')
         const age = document.getElementById('age')
@@ -40,11 +40,11 @@ function AddNode(props) {
 
         if (update) {
             // check all fields in data and remove empty ones
-            for (const key in data) {
+            Object.keys(data).forEach((key) => {
                 if (data[key] === '') {
                     delete data[key]
-                } 
-            }
+                }
+            })
 
             updateNode('user', { name: nameFilter }, data)
         } else {

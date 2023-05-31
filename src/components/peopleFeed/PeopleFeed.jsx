@@ -8,7 +8,6 @@ function JobsFeed() {
 
     useEffect(() => {
         getAllUsers().then((result) => {
-            console.log(result)
             setPosts(result)
         })
     }, [])

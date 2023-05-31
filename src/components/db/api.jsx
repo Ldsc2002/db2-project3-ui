@@ -9,6 +9,32 @@ const driver = neo4j.driver(
 
 const session = driver.session()
 
+const dataToString = (propertiesData) => {
+    let properties = ''
+
+    Object.keys(propertiesData).forEach((key) => {
+        // if data is boolean, don't add quotes
+        if (typeof propertiesData[key] === 'boolean') {
+            properties += `${key}: ${propertiesData[key]}, `
+        } else if (typeof propertiesData[key] === 'number') {
+            properties += `${key}: ${propertiesData[key]}, `
+        } else if (propertiesData[key] instanceof Array) {
+            let array = '['
+            propertiesData[key].forEach((element) => {
+                array += `'${element}', `
+            })
+            array = array.slice(0, -2)
+            array += ']'
+
+            properties += `${key}: ${array}, `
+        } else {
+            properties += `${key}: '${propertiesData[key]}', `
+        }
+    })
+
+    return properties.slice(0, -2)
+}
+
 // Getters
 export const getAllJobs = async () => {
     const query = 'MATCH (n:job) RETURN n'
@@ -72,7 +98,7 @@ export const getAllNodes = async () => {
 
 // Setters
 export const addNode = async (label, propertiesData) => {
-    let properties = dataToString(propertiesData)
+    const properties = dataToString(propertiesData)
 
     const query = `CREATE (n:${label} {${properties}}) RETURN n`
     return session.run(query)
@@ -84,10 +110,10 @@ export const addNode = async (label, propertiesData) => {
 }
 
 export const updateNode = async (label, propertiesData, newData) => {
-    let properties = dataToString(propertiesData)
-    let newProperties = dataToString(newData)
+    const properties = dataToString(propertiesData)
+    const newProperties = dataToString(newData)
 
-    const query = `MATCH (n:${label } {${properties}}) SET n += {${newProperties}} RETURN n`
+    const query = `MATCH (n:${label} {${properties}}) SET n += {${newProperties}} RETURN n`
     return session.run(query)
         .then((result) => result.records.map((record) => record.get('n').properties))
         .catch((error) => {
@@ -107,7 +133,7 @@ export const relBetweenUserAndJob = async (user, job) => {
 }
 
 export const deleteNode = async (label, propertiesData) => {
-    let properties = dataToString(propertiesData)
+    const properties = dataToString(propertiesData)
 
     const query = `MATCH (n:${label} {${properties}}) DETACH DELETE n`
     return session.run(query)
@@ -128,8 +154,8 @@ export const deleteRel = async (user, job) => {
         })
 }
 
-export const deleteProperty = async (label, properties) => {
-    const query = `MATCH (n:${label}) REMOVE n.${properties}`
+export const deleteProperty = async (name, property) => {
+    const query = `MATCH (n:user {username: '${name}'}) REMOVE n.${property}`
     return session.run(query)
         .then((result) => result.records.map((record) => record.get('n').properties))
         .catch((error) => {
@@ -138,32 +164,12 @@ export const deleteProperty = async (label, properties) => {
         })
 }
 
-const dataToString = (propertiesData) => {
-    let properties = ''
-
-    Object.keys(propertiesData).forEach((key) => {
-        // if data is boolean, don't add quotes
-        if (typeof propertiesData[key] === 'boolean') {
-            properties += `${key}: ${propertiesData[key]}, `
-
-        } else if (typeof propertiesData[key] === 'number') {
-            properties += `${key}: ${propertiesData[key]}, `
-
-        } else if (propertiesData[key] instanceof Array) {
-            let array = '['
-            propertiesData[key].forEach((element) => {
-                array += `'${element}', `
-            })
-            array = array.slice(0, -2)
-            array += ']'
-
-            properties += `${key}: ${array}, `
-        
-        } else {
-            properties += `${key}: '${propertiesData[key]}', `
-
-        }
-    })
-    
-    return properties.slice(0, -2)
+export const deleteRelProperty = async (user, job, property) => {
+    const query = `MATCH (n:user {username: '${user}'})-[r:applied]->(j:job {title: '${job}'}) REMOVE r.${property}`
+    return session.run(query)
+        .then((result) => result.records.map((record) => record.get('r').properties))
+        .catch((error) => {
+            console.log(error)
+            return []
+        })
 }
